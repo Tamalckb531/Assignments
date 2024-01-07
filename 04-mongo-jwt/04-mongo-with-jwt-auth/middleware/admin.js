@@ -11,7 +11,7 @@ function adminMiddleware(req, res, next) {
     const jwtToken = tokenArray[1]; // "token"
 
     try{
-        const decoded = jwt.varify(jwtToken, JWT_SECRET); //will return the payload
+        const decoded = jwt.verify(jwtToken, JWT_SECRET); //will return the payload
         if(decoded.username){
             next();
         }else{
