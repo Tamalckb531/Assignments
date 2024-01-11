@@ -7,31 +7,78 @@
     let todoState = [];
     let oldTodoState = [];
 
-    function addTodoToDom() {
-      
+    function addTodoToDom(todo) {
+      const todos = document.getElementById('todos');
+      const div = document.createElement('div');
+      div.id = `todo-${todo.id}`;
+      const titleElement = document.createElement('h1');
+      titleElement.innerText =  todo.title;
+      const descriptionElement = document.createElement('h5');
+      descriptionElement.innerText = todo.description;
+      const deleteButton = document.createElement('button');
+      deleteButton.innerText = "Delete";
+      deleteButton.addEventListener('click', ()=>{
+        removeTodoFromDom(todo);
+      });
+      div.appendChild(titleElement);
+      div.appendChild(descriptionElement);
+      div.appendChild(deleteButton);
+      todos.appendChild(div);
     }
 
     function removeTodoFromDom(todo) {
-      
+      const element = document.getElementById(`todo-${todo.id}`);
+      if(element){
+        element.remove();
+      }
     }
 
     function updateTodoInDom(oldTodo, newTodo) {
-        
+      const element = document.getElementById(`todo-${oldTodo.id}`);
+      if(element){
+        element.querySelector('h1').innerText = newTodo.title;
+        element.querySelector('h5').innerText = newTodo.description;
+      }
     }
 
-    function updateState(newTodos) {
-      // calculate the diff b/w newTodos and oldTodos.
-      // More specifically, find out what todos are - 
-      // 1. added
-      // 2. deleted
-      // 3. updated
-      const added = [];
-      const deleted = [];
-      const updated = [];
-      // calculate these 3 arrays
-      // call addTodo, removeTodo, updateTodo functions on each of the
-      // elements
-      oldTodoState = newTodos;
+    function updateState(newTodos) { 
+      // 1. added -> store newTodo - oldTodo
+      let added = newTodos.filter((todo)=> {
+        return !oldTodoState.some((todoIndex)=>{ //return those Item which not same as newTodo(!) 
+          return todoIndex.id===todo.id; //return true if oldTodo has an item same as newTodo
+        })
+      })
+      // 2. deleted -> stores oldTodo-newTodo
+      let deleted = oldTodoState.filter((todo)=>{
+        return !newTodos.some((todoIndex)=>{
+          return todoIndex.id === todo.id;
+        })
+      })
+      // 3. updated -> store those todo which has a difference in title or description
+      let updated = newTodos.filter((newTodo)=>{
+        return oldTodoState.some((oldTodo)=>{
+          return (oldTodo.id===newTodo.id)&&(oldTodo.title!== newTodo.title || oldTodo.description !== newTodo.description); //check the id and title or des diff
+        })
+      })
+
+      console.log("added: ", added);
+      console.log("Deleted: ", deleted);
+      console.log("Updated: ", updated);
+      console.log("GlobalId: ", globalId);
+      
+      for(const item of added){
+        addTodoToDom(item);
+      }
+
+      for(const item of deleted){
+        removeTodoFromDom(item);
+      }
+
+      for(const item of updated){
+        updateTodoInDom(item);
+      }
+
+      oldTodoState = [...newTodos];
     }
 
     function addTodo() {
