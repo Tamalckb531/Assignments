@@ -1,0 +1,42 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.main{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.container{
+  height :  21rem;
+  width: 30rem;
+  margin: 15px;
+  border: 1px solid rgb(228, 225, 225);
+  box-shadow: 10px -13px 30px -3px rgba(0,0,0,0.1);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.container > ul{
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.btn{
+  padding: 12px;
+  margin-right: 20px;
+  border-radius: 8px;
+  border: none;
+  background-color: hsl(240, 100%, 65%);
+}
+
+.btn > a{
+  text-decoration: none;
+  color: white;
+  font-size: 15px;
+}
